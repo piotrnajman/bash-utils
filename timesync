@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+ 
+exec 1> >(logger -s -t $(basename $0)) 2>&1
+ 
+set -o errexit
+set -o nounset
+ 
+_ntpdate="/usr/sbin/ntpdate"
+_ntpserv1="212.244.36.227"
+_ntpserv2="212.244.36.228"
+ 
+${_ntpdate} ${_ntpserv1}
+if [ $? != 0 ]; then
+  ${_ntpdate} ${_ntpserv2}
+fi
+ 
+exit $?
+
