@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#
+# Script create .htpasswd file from file
+# where login credentials are stored as list
+# of tabular separated user and password
+#
+
+set -o errexit
+set -o nounset
+
+_crfilename="credentials"
+_htfilename=".htpasswd"
+
+readarray _rows < ${_crfilename}
+touch ${_htfilename}
+for _row in "${_rows[@]}";do
+    _row_array=(${_row})
+    _user=${_row_array[0]}
+    _pass=${_row_array[1]}
+    htpasswd -b -B ${_htfilename} ${_user} ${_pass}
+done
+
+exit 0
